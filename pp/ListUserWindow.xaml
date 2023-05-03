@@ -11,7 +11,7 @@
             pack://application:,,,/Photos/picture.png
         </system:String>
     </Window.Resources>
-    <Grid>
+    <Grid x:Name="gridN">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -27,16 +27,22 @@
 
         <ComboBox Name="ComboBoxFilterProductDiscountAmount" SelectionChanged="ComboBoxFilterProductDiscountAmount_OnSelectionChanged"/>
 
-        <ListView Grid.Row="2" Grid.ColumnSpan="2" x:Name="ListProducts" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
+        <ComboBox Name="order" SelectionChanged="order_SelectionChanged" Grid.Row="1" Grid.Column="1"  />
+
+        <TextBox Name="nameFIlter" Grid.Row="1" Grid.Column="0" TextChanged="nameFIlter_TextChanged" Width="250" HorizontalAlignment="Right"></TextBox>
+        <Label x:Name="count" Grid.Row="1" HorizontalAlignment="Left" Width="220" Margin="0,41,0,355" Grid.RowSpan="2"/>
+        <Label Grid.Row="1" HorizontalAlignment="Left" Width="220" Grid.RowSpan="1" Content="Поиск по наименованию" FontSize="16"/>
+        <ListView Grid.Row="2" Grid.ColumnSpan="2" x:Name="ListProducts" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,41,0,0">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel ItemWidth="450" ItemHeight="200"/>
+                    <WrapPanel ItemWidth="900" ItemHeight="200"/>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border BorderThickness="1" BorderBrush="Black">
-                        <Grid Width="450" Height="200" Background="{Binding ColorProductDiscountAmount }">
+                        <Grid Width="900" Height="200" Background="{Binding ColorProductDiscountAmount }">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
@@ -44,17 +50,19 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="4*"/>
                                 <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Source="{Binding ProductPhotoFromResources, FallbackValue={StaticResource NullImage}}" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
-                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ProductName}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-                            <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ProductDescription}" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
-                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding ProductManufacturer.ProductManufacturerName}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding ProductCost}" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
-                            <TextBlock Grid.Row="0" Grid.RowSpan="4" Grid.Column="3" Text="{Binding ProductDiscountAmount}" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                            <Image Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Source="{Binding ProductPhotoFromResources, FallbackValue={StaticResource NullImage}}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3"></Image>
+                            <TextBlock Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Left" VerticalAlignment="Center"><Run Text="Наименование товара: "></Run><Run Text="{Binding ProductName}"></Run></TextBlock>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"  VerticalAlignment="Center" HorizontalAlignment="Left"><Run Text="Описание товара: "></Run><Run Text="{Binding ProductDescription}"></Run></TextBlock>
+                            <TextBlock Grid.Row="2" Grid.Column="1"  HorizontalAlignment="Left" VerticalAlignment="Center"><Run Text="Производитель: "></Run><Run Text="{Binding ProductManufacturer.ProductManufacturerName}"></Run></TextBlock>
+                            <TextBlock Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" HorizontalAlignment="Left" TextDecorations="Strikethrough"><Run Text="Цена: "></Run><Run Text="{Binding ProductCost}"></Run></TextBlock>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding ProductCostWithAmount}" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                            <TextBlock Grid.Row="0" Grid.RowSpan="4" Grid.Column="3"  VerticalAlignment="Center" HorizontalAlignment="Left"><Run Text="Размер скидки: "></Run><Run Text="{Binding ProductMaxDiscountAmount}"></Run><Run Text="%"></Run></TextBlock>
+
                         </Grid>
                     </Border>
                 </DataTemplate>

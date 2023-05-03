@@ -31,8 +31,14 @@ namespace pp
 
             ComboBoxFilterProductDiscountAmount.ItemsSource = new List<string>
             {
-                "0-10%", "10-15%", "15-∞%", "All ranges"
+                "0-9,99%", "10-14,99%", "15% и более", "Все"
             };
+            order.ItemsSource = new List<string>
+            {
+                "По возрастанию", "По убыванию"
+            };
+            count.Content = $"Кол-во записей {ListProducts.Items.Count} из {db.Product.ToList().Count}";
+
         }
 
         private void ButtonExit_OnClick(object sender, RoutedEventArgs e)
@@ -46,31 +52,119 @@ namespace pp
             Close();
         }
 
-        private void ComboBoxFilterProductDiscountAmount_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void GetByFilter()
         {
-            switch (ComboBoxFilterProductDiscountAmount.SelectedIndex)
+            var list = new List<Product>();
+            var combo = ComboBoxFilterProductDiscountAmount.SelectedIndex;
+            var orderB = order.SelectedIndex;
+            var textChanged = nameFIlter.Text;
+            if (combo != -1 && !string.IsNullOrEmpty(textChanged))
+            {
+                switch (combo)
+                {
+
+                    case 0:
+                        {
+                            if (!string.IsNullOrEmpty(textChanged))
+                                list.AddRange(db.Product.Where(x => x.ProductName.Contains(textChanged) && x.ProductMaxDiscountAmount < 10));
+                            else
+                                list.AddRange(db.Product.Where(p => p.ProductMaxDiscountAmount < 10));
+                            break;
+                        }
+                    case 1:
+                        {
+                            if (!string.IsNullOrEmpty(textChanged))
+                                list.AddRange(db.Product.Where(x => x.ProductName.Contains(textChanged) && x.ProductMaxDiscountAmount > 10 && x.ProductMaxDiscountAmount < 15));
+                            else
+                                list.AddRange(db.Product.Where(p => p.ProductMaxDiscountAmount > 10 && p.ProductMaxDiscountAmount < 15));
+                            break;
+                        }
+                    case 2:
+                        {
+                            if (!string.IsNullOrEmpty(textChanged))
+                                list.AddRange(db.Product.Where(x => x.ProductName.Contains(textChanged) && x.ProductMaxDiscountAmount > 15));
+                            else
+                                list.AddRange(db.Product.Where(p => p.ProductMaxDiscountAmount > 15));
+                            break;
+                        }
+                    case 3:
+                        {
+                            list.AddRange(db.Product.Where(x => x.ProductName.Contains(textChanged)));
+
+                            break;
+                        }
+                }
+
+            }
+            else if (!string.IsNullOrEmpty(textChanged))
+            {
+                list.AddRange(db.Product.Where(x => x.ProductName.Contains(textChanged)));
+            }
+            else if (combo != -1)
+            {
+                switch (combo)
+                {
+
+                    case 0:
+                        {
+
+                            list.AddRange(db.Product.Where(p => p.ProductMaxDiscountAmount < 10));
+                            break;
+                        }
+                    case 1:
+                        {
+                            list.AddRange(db.Product.Where(p => p.ProductMaxDiscountAmount > 10 && p.ProductMaxDiscountAmount < 15));
+                            break;
+                        }
+                    case 2:
+                        {
+                            list.AddRange(db.Product.Where(p => p.ProductMaxDiscountAmount > 15));
+                            break;
+                        }
+                    case 3:
+                        {
+                            list.AddRange(db.Product.Where(x => x.ProductName.Contains(textChanged)));
+                            break;
+                        }
+                }
+            }
+            else
+            {
+                list = db.Product.ToList();
+            }
+
+            switch (orderB)
             {
                 case 0:
                     {
-                        ListProducts.ItemsSource = db.Product.Where(p => p.ProductDiscountAmount <= 10).ToList();
+                        list = list.OrderBy(f => f.ProductMaxDiscountAmount).ToList();
                         break;
                     }
                 case 1:
                     {
-                        ListProducts.ItemsSource = db.Product.Where(p => p.ProductDiscountAmount >= 10 && p.ProductDiscountAmount <= 15).ToList();
-                        break;
-                    }
-                case 2:
-                    {
-                        ListProducts.ItemsSource = db.Product.Where(p => p.ProductDiscountAmount >= 15).ToList();
-                        break;
-                    }
-                case 3:
-                    {
-                        ListProducts.ItemsSource = db.Product.ToList();
+                        list = list.OrderByDescending(f => f.ProductMaxDiscountAmount).ToList();
                         break;
                     }
             }
+
+            ListProducts.ItemsSource = list;
+
+            count.Content = $"Кол-во записей {ListProducts.Items.Count} из {db.Product.ToList().Count}";
+        }
+
+        private void ComboBoxFilterProductDiscountAmount_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            GetByFilter();
+        }
+
+        private void nameFIlter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            GetByFilter();
+        }
+
+        private void order_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            GetByFilter();
         }
     }
 }

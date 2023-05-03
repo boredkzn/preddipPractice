@@ -33,6 +33,7 @@
         <Button x:Name="joinB" Grid.Row="7" Grid.Column="1" Height="50" Width="180" Content="Войти" FontSize="20" Click="joinB_Click"></Button>
         <Button x:Name="viewB" Grid.Row="7" Grid.Column="3" Height="50" Width="180" Content="Список товаров" FontSize="20" Click="viewB_Click"></Button>
         <Image Grid.ColumnSpan="2" Margin="251,16,30,10" Grid.RowSpan="3" Source="/logo.png" Stretch="Fill" Grid.Column="3"/>
+        <Label Name="lblTime" FontSize="40"  />
 
     </Grid>
 </Window>

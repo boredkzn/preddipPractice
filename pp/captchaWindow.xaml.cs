@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace pp
 {
@@ -22,13 +23,14 @@ namespace pp
         static Random r = new Random();
         static string symbols = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
-        private Window PreviousWindow { get; set; }
+        private MainWindow PreviousWindow { get; set; }
 
-        public captchaWindow(Window previousWindow)
+        public captchaWindow(MainWindow previousWindow)
         {
             InitializeComponent();
             cap.Text = GetCap();
             PreviousWindow = previousWindow;
+            
         }
 
         public string GetCap()
@@ -53,8 +55,32 @@ namespace pp
             else
             {
                 MainWindow.IsReadyToJoin = false;
-                MessageBox.Show("Неправильный ввод");
+                MessageBox.Show("Неправильный ввод, вас блокнули на 10 сек, ожидайте");
+
+                Block();
+                DispatcherTimer timer = new DispatcherTimer();
+
+                timer.Tick += new EventHandler(Unblock);
+                timer.Interval = new TimeSpan(0, 0, 10);
+                timer.Start();
+
+                PreviousWindow.lblTime.Content = timer.ToString();
+                this.PreviousWindow.IsEnabled = true;
+                Hide();
+               
             }
+        }
+
+        private void Block()
+        {
+            PreviousWindow.login.IsEnabled = false;
+            PreviousWindow.password.IsEnabled = false;
+        }
+
+        private void Unblock(object sender, EventArgs e)
+        {
+            PreviousWindow.login.IsEnabled = true;
+            PreviousWindow.password.IsEnabled = true;
         }
     }
 }

@@ -12,6 +12,7 @@ namespace pp
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Windows.Media;
 
     public partial class Product
     {
@@ -42,8 +43,14 @@ namespace pp
         public virtual ProductSupplier ProductSupplier { get; set; }
         public virtual UnitType UnitType { get; set; }
 
-        
+        [NotMapped]
+        public SolidColorBrush ColorProductDiscountAmount => ProductMaxDiscountAmount > 15 ? new SolidColorBrush((System.Windows.Media.Color)ColorConverter.ConvertFromString("#7fff00")) : new SolidColorBrush(System.Windows.Media.Color.FromArgb(0, 0, 0, 0));
+
+
         [NotMapped]
         public string ProductPhotoFromResources => "/Photos/" + ProductPhoto;
+
+        [NotMapped]
+        public double ProductCostWithAmount => double.Parse(ProductCost.ToString()) - (double.Parse(ProductCost.ToString()) * (double.Parse(ProductMaxDiscountAmount.ToString()) / 100.0));
     }
 }
