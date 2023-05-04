@@ -24,6 +24,7 @@
 
         <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">USER NAME</TextBlock>
         <Button Name="ButtonExit" Click="ButtonExit_OnClick" Grid.Row="0" Grid.Column="1">Выйти</Button>
+        <Button Name="create" Click="create_Click" Margin="0,41,0,336" Grid.RowSpan="2" Grid.Column="1" Grid.Row="1" >Добавить товар</Button>
 
         <ComboBox Name="ComboBoxFilterProductDiscountAmount" SelectionChanged="ComboBoxFilterProductDiscountAmount_OnSelectionChanged"/>
 
@@ -54,6 +55,7 @@
                                 <ColumnDefinition Width="4*"/>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
                             <Image Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Source="{Binding ProductPhotoFromResources, FallbackValue={StaticResource NullImage}}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3"></Image>
                             <TextBlock Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Left" VerticalAlignment="Center"><Run Text="Наименование товара: "></Run><Run Text="{Binding ProductName}"></Run></TextBlock>
@@ -62,7 +64,7 @@
                             <TextBlock Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" HorizontalAlignment="Left" TextDecorations="Strikethrough"><Run Text="Цена: "></Run><Run Text="{Binding ProductCost}"></Run></TextBlock>
                             <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding ProductCostWithAmount}" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
                             <TextBlock Grid.Row="0" Grid.RowSpan="4" Grid.Column="3"  VerticalAlignment="Center" HorizontalAlignment="Left"><Run Text="Размер скидки: "></Run><Run Text="{Binding ProductMaxDiscountAmount}"></Run><Run Text="%"></Run></TextBlock>
-
+                            <Button Grid.Row="0" Grid.RowSpan="4" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Редактирование" Height="30" Click="Button_Click"></Button>
                         </Grid>
                     </Border>
                 </DataTemplate>

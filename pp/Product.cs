@@ -12,7 +12,10 @@ namespace pp
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Drawing;
     using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+    using ColorConverter = System.Windows.Media.ColorConverter;
 
     public partial class Product
     {
@@ -31,6 +34,7 @@ namespace pp
         public int ProductManufacturerID { get; set; }
         public int ProductSupplierID { get; set; }
         public int ProductCategoryID { get; set; }
+
         public Nullable<byte> ProductDiscountAmount { get; set; }
         public int ProductQuantityInStock { get; set; }
         public string ProductDescription { get; set; }
@@ -48,7 +52,7 @@ namespace pp
 
 
         [NotMapped]
-        public string ProductPhotoFromResources => "/Photos/" + ProductPhoto;
+        public BitmapImage ProductPhotoFromResources => !string.IsNullOrEmpty(ProductPhoto) ?  new BitmapImage(new Uri("D:\\vss\\pp\\pp\\Photos\\" + ProductPhoto)) : new BitmapImage(new Uri("D:\\vss\\pp\\pp\\Photos\\picture.png"));
 
         [NotMapped]
         public double ProductCostWithAmount => double.Parse(ProductCost.ToString()) - (double.Parse(ProductCost.ToString()) * (double.Parse(ProductMaxDiscountAmount.ToString()) / 100.0));

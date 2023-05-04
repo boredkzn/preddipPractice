@@ -166,5 +166,19 @@ namespace pp
         {
             GetByFilter();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Product product = (sender as Button)?.DataContext as Product;
+            new EditCreateWindow(product, true).Show();
+            this.Close();
+        }
+
+        private void create_Click(object sender, RoutedEventArgs e)
+        {
+            Product product = new Product();
+            new EditCreateWindow(product, false).Show();
+            this.Close();
+        }
     }
 }
