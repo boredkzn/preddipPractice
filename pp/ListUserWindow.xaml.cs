@@ -21,7 +21,8 @@ namespace pp
     public partial class ListUserWindow : Window
     {
         private ppEntities db;
-
+        private List<OrderProduct> OrderProducts;
+        
         public ListUserWindow()
         {
             InitializeComponent();
@@ -38,6 +39,7 @@ namespace pp
                 "По возрастанию", "По убыванию"
             };
             count.Content = $"Кол-во записей {ListProducts.Items.Count} из {db.Product.ToList().Count}";
+            CorzinaButton.Visibility = Visibility.Hidden;
 
         }
 
@@ -179,6 +181,41 @@ namespace pp
             Product product = new Product();
             new EditCreateWindow(product, false).Show();
             this.Close();
+        }
+
+        private void ListProducts_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (OrderProducts == null)
+                OrderProducts = new List<OrderProduct>();
+
+            var result = MessageBox.Show("Добавить продукт в заказ?", "Добавить продукт в карту", MessageBoxButton.YesNo);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    var product = (((sender as Grid).DataContext as Product));
+                    if (OrderProducts.Select(x => x.Product).ToList().Contains(product))
+                        OrderProducts.Find(x => x.Product == product).Count = OrderProducts.Find(x => x.Product == product).Count += 1;
+                    else
+                        OrderProducts.Add(new OrderProduct { Product = product, Count = 1, ProductID = product.ProductID, OrderProductID = db.OrderProduct.Select(f=>f.OrderProductID).Max() + 1 });
+                    break;
+                case MessageBoxResult.Cancel:
+                    break;
+                case MessageBoxResult.None:
+                case MessageBoxResult.OK:
+                case MessageBoxResult.No:
+                default:
+                    break;
+            }
+
+            if (OrderProducts.Any())
+                CorzinaButton.Visibility = Visibility.Visible;
+            else
+                CorzinaButton.Visibility = Visibility.Hidden;
+        }
+
+        private void Corzina_Click(object sender, RoutedEventArgs e)
+        {
+            new OrderProductWindow(OrderProducts).Show();
         }
     }
 }

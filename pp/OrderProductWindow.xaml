@@ -1,0 +1,61 @@
+﻿<Window x:Class="pp.OrderProductWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:pp" xmlns:system="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="Корзина" Height="500" Width="950" Icon="Photos/icon.ico">
+    <Window.Resources>
+        <system:String x:Key="NullImage">
+            pack://application:,,,/Photos/picture.png
+        </system:String>
+    </Window.Resources>
+
+    <Grid>
+        <Button Margin="734,0,0,428" Content="Сформировать заказ" Click="Button_Click_1"></Button>
+        <Button Margin="411,60,310,368" Content="Сформировать печать" Click="PrintButton_Click"></Button>
+        <TextBlock Text="Итоговая цена: " Margin="0,0,620,444"><Run x:Name="PriceText" ></Run><Run></Run></TextBlock>
+        <Label Content="Пункт выдачи" Margin="0,45,620,368"></Label>
+        <ComboBox Name="PickupPointComboBox" Margin="109,45,646,391" />
+
+        <ListView  x:Name="ListProducts" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,122,0,0" >
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel ItemWidth="900" ItemHeight="200" VerticalAlignment="Bottom"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate >
+                <DataTemplate>
+                    <Border BorderThickness="1" BorderBrush="Black">
+                        <Grid Width="900" Height="200" Background="{Binding Product.ColorProductDiscountAmount }" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Source="{Binding Product.ProductPhotoFromResources, FallbackValue={StaticResource NullImage}}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3"></Image>
+                            <TextBlock Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Left" VerticalAlignment="Center"><Run Text="Наименование товара: "></Run><Run Text="{Binding Product.ProductName}"></Run></TextBlock>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"  VerticalAlignment="Center" HorizontalAlignment="Left"><Run Text="Описание товара: "></Run><Run Text="{Binding Product.ProductDescription}"></Run></TextBlock>
+                            <TextBlock Grid.Row="2" Grid.Column="1"  HorizontalAlignment="Left" VerticalAlignment="Center"><Run Text="Производитель: "></Run><Run Text="{Binding Product.ProductManufacturer.ProductManufacturerName}"></Run></TextBlock>
+                            <TextBlock Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" HorizontalAlignment="Left" TextDecorations="Strikethrough"><Run Text="Цена: "></Run><Run Text="{Binding Product.ProductCost}"></Run></TextBlock>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Product.ProductCostWithAmount}" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                            <TextBlock Grid.Row="0" Grid.RowSpan="4" Grid.Column="3"  VerticalAlignment="Center" HorizontalAlignment="Left"><Run Text="Количество: "></Run><Run Text="{Binding Count}"></Run></TextBlock>
+                            <Button Grid.Row="0" Grid.RowSpan="4" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Удалить из заказа" Height="30" Click="Button_Click"></Button>
+
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button Margin="702,60,19,368" Content="Назад" Click="Button_Click_2"/>
+    </Grid>
+</Window>

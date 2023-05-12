@@ -52,7 +52,7 @@ namespace pp
 
 
         [NotMapped]
-        public BitmapImage ProductPhotoFromResources => !string.IsNullOrEmpty(ProductPhoto) ?  new BitmapImage(new Uri("D:\\vss\\pp\\pp\\Photos\\" + ProductPhoto)) : new BitmapImage(new Uri("D:\\vss\\pp\\pp\\Photos\\picture.png"));
+        public BitmapImage ProductPhotoFromResources => !string.IsNullOrEmpty(ProductPhoto) ?  new BitmapImage(new Uri("C:\\Users\\User\\Source\\Repos\\preddipPractice\\pp\\Photos\\" + ProductPhoto)) : new BitmapImage(new Uri("C:\\Users\\User\\Source\\Repos\\preddipPractice\\pp\\Photos\\picture.png"));
 
         [NotMapped]
         public double ProductCostWithAmount => double.Parse(ProductCost.ToString()) - (double.Parse(ProductCost.ToString()) * (double.Parse(ProductMaxDiscountAmount.ToString()) / 100.0));
